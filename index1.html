@@ -1,0 +1,329 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import seaborn as pairplot
+import warnings
+warnings.filterwarnings('ignore')
+df=pd.read_csv('full.csv')
+df
+PassengerId	Survived	Pclass	Name	Sex	Age	SibSp	Parch	Ticket	Fare	...	Embarked	WikiId	Name_wiki	Age_wiki	Hometown	Boarded	Destination	Lifeboat	Body	Class
+0	1	0.0	3	Braund, Mr. Owen Harris	male	22.0	1	0	A/5 21171	7.2500	...	S	691.0	Braund, Mr. Owen Harris	22.0	Bridgerule, Devon, England	Southampton	Qu'Appelle Valley, Saskatchewan, Canada	NaN	NaN	3.0
+1	2	1.0	1	Cumings, Mrs. John Bradley (Florence Briggs Th...	female	38.0	1	0	PC 17599	71.2833	...	C	90.0	Cumings, Mrs. Florence Briggs (née Thayer)	35.0	New York, New York, US	Cherbourg	New York, New York, US	4	NaN	1.0
+2	3	1.0	3	Heikkinen, Miss. Laina	female	26.0	0	0	STON/O2. 3101282	7.9250	...	S	865.0	Heikkinen, Miss Laina	26.0	Jyväskylä, Finland	Southampton	New York City	14?	NaN	3.0
+3	4	1.0	1	Futrelle, Mrs. Jacques Heath (Lily May Peel)	female	35.0	1	0	113803	53.1000	...	S	127.0	Futrelle, Mrs. Lily May (née Peel)	35.0	Scituate, Massachusetts, US	Southampton	Scituate, Massachusetts, US	D	NaN	1.0
+4	5	0.0	3	Allen, Mr. William Henry	male	35.0	0	0	373450	8.0500	...	S	627.0	Allen, Mr. William Henry	35.0	Birmingham, West Midlands, England	Southampton	New York City	NaN	NaN	3.0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+1304	1305	NaN	3	Spector, Mr. Woolf	male	NaN	0	0	A.5. 3236	8.0500	...	S	1227.0	Spector, Mr. Woolf	23.0	London, England	Southampton	New York City	NaN	NaN	3.0
+1305	1306	NaN	1	Oliva y Ocana, Dona. Fermina	female	39.0	0	0	PC 17758	108.9000	...	C	229.0	and maid, Doña Fermina Oliva y Ocana	39.0	Madrid, Spain	Cherbourg	New York, New York, US	8	NaN	1.0
+1306	1307	NaN	3	Saether, Mr. Simon Sivertsen	male	38.5	0	0	SOTON/O.Q. 3101262	7.2500	...	S	1169.0	Sæther, Mr. Simon Sivertsen	43.0	Skaun, Sør-Trøndelag, Norway	Southampton	US	NaN	32MB	3.0
+1307	1308	NaN	3	Ware, Mr. Frederick	male	NaN	0	0	359309	8.0500	...	S	1289.0	Ware, Mr. Frederick William	34.0	Greenwich, London, England	Southampton	New York City	NaN	NaN	3.0
+1308	1309	NaN	3	Peter, Master. Michael J	male	NaN	1	1	2668	22.3583	...	C	702.0	Butrus-Youssef, Master Makhkhul	4.0	Sar'al[81], Syria	Cherbourg	Detroit, Michigan, US	D	NaN	3.0
+1309 rows × 21 columns
+
+df.head()
+PassengerId	Survived	Pclass	Name	Sex	Age	SibSp	Parch	Ticket	Fare	...	Embarked	WikiId	Name_wiki	Age_wiki	Hometown	Boarded	Destination	Lifeboat	Body	Class
+0	1	0.0	3	Braund, Mr. Owen Harris	male	22.0	1	0	A/5 21171	7.2500	...	S	691.0	Braund, Mr. Owen Harris	22.0	Bridgerule, Devon, England	Southampton	Qu'Appelle Valley, Saskatchewan, Canada	NaN	NaN	3.0
+1	2	1.0	1	Cumings, Mrs. John Bradley (Florence Briggs Th...	female	38.0	1	0	PC 17599	71.2833	...	C	90.0	Cumings, Mrs. Florence Briggs (née Thayer)	35.0	New York, New York, US	Cherbourg	New York, New York, US	4	NaN	1.0
+2	3	1.0	3	Heikkinen, Miss. Laina	female	26.0	0	0	STON/O2. 3101282	7.9250	...	S	865.0	Heikkinen, Miss Laina	26.0	Jyväskylä, Finland	Southampton	New York City	14?	NaN	3.0
+3	4	1.0	1	Futrelle, Mrs. Jacques Heath (Lily May Peel)	female	35.0	1	0	113803	53.1000	...	S	127.0	Futrelle, Mrs. Lily May (née Peel)	35.0	Scituate, Massachusetts, US	Southampton	Scituate, Massachusetts, US	D	NaN	1.0
+4	5	0.0	3	Allen, Mr. William Henry	male	35.0	0	0	373450	8.0500	...	S	627.0	Allen, Mr. William Henry	35.0	Birmingham, West Midlands, England	Southampton	New York City	NaN	NaN	3.0
+5 rows × 21 columns
+
+df.columns
+Index(['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp',
+       'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked', 'WikiId', 'Name_wiki',
+       'Age_wiki', 'Hometown', 'Boarded', 'Destination', 'Lifeboat', 'Body',
+       'Class'],
+      dtype='object')
+df.columns.values
+array(['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp',
+       'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked', 'WikiId',
+       'Name_wiki', 'Age_wiki', 'Hometown', 'Boarded', 'Destination',
+       'Lifeboat', 'Body', 'Class'], dtype=object)
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 1309 entries, 0 to 1308
+Data columns (total 21 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   PassengerId  1309 non-null   int64  
+ 1   Survived     891 non-null    float64
+ 2   Pclass       1309 non-null   int64  
+ 3   Name         1309 non-null   object 
+ 4   Sex          1309 non-null   object 
+ 5   Age          1046 non-null   float64
+ 6   SibSp        1309 non-null   int64  
+ 7   Parch        1309 non-null   int64  
+ 8   Ticket       1309 non-null   object 
+ 9   Fare         1308 non-null   float64
+ 10  Cabin        295 non-null    object 
+ 11  Embarked     1307 non-null   object 
+ 12  WikiId       1304 non-null   float64
+ 13  Name_wiki    1304 non-null   object 
+ 14  Age_wiki     1302 non-null   float64
+ 15  Hometown     1304 non-null   object 
+ 16  Boarded      1304 non-null   object 
+ 17  Destination  1304 non-null   object 
+ 18  Lifeboat     502 non-null    object 
+ 19  Body         130 non-null    object 
+ 20  Class        1304 non-null   float64
+dtypes: float64(6), int64(4), object(11)
+memory usage: 214.9+ KB
+df.isnull().sum()
+PassengerId       0
+Survived        418
+Pclass            0
+Name              0
+Sex               0
+Age             263
+SibSp             0
+Parch             0
+Ticket            0
+Fare              1
+Cabin          1014
+Embarked          2
+WikiId            5
+Name_wiki         5
+Age_wiki          7
+Hometown          5
+Boarded           5
+Destination       5
+Lifeboat        807
+Body           1179
+Class             5
+dtype: int64
+df.drop(columns=['Cabin'],inplace=True)
+df['Age'].fillna(df['Age'].mean(),inplace=True)
+df.drop(columns=['Body'],inplace=True)
+df.drop(columns=['Lifeboat'],inplace=True)
+df['Embarked'].fillna('S',inplace=True)
+df.describe()
+PassengerId	Survived	Pclass	Age	SibSp	Parch	Fare	WikiId	Age_wiki	Class
+count	1309.000000	891.000000	1309.000000	1309.000000	1309.000000	1309.000000	1308.000000	1304.000000	1302.000000	1304.000000
+mean	655.000000	0.383838	2.294882	29.881138	0.498854	0.385027	33.295479	658.534509	29.415829	2.291411
+std	378.020061	0.486592	0.837836	12.883193	1.041658	0.865560	51.758668	380.377373	13.758954	0.840852
+min	1.000000	0.000000	1.000000	0.170000	0.000000	0.000000	0.000000	1.000000	0.170000	1.000000
+25%	328.000000	0.000000	2.000000	22.000000	0.000000	0.000000	7.895800	326.750000	21.000000	1.750000
+50%	655.000000	0.000000	3.000000	29.881138	0.000000	0.000000	14.454200	661.500000	28.000000	3.000000
+75%	982.000000	1.000000	3.000000	35.000000	1.000000	0.000000	31.275000	987.250000	37.750000	3.000000
+max	1309.000000	1.000000	3.000000	80.000000	8.000000	9.000000	512.329200	1314.000000	74.000000	3.000000
+df['WikiId'].fillna(df['WikiId'].mean(),inplace=True)
+df['Age_wiki'].fillna(df['Age_wiki'].median(),inplace=True)
+df['Class'].fillna(df['Class'].mean(),inplace=True)
+df['Fare'].fillna(df['Fare'].mean(),inplace=True)
+df.isnull().sum()
+PassengerId      0
+Survived       418
+Pclass           0
+Name             0
+Sex              0
+Age              0
+SibSp            0
+Parch            0
+Ticket           0
+Fare             0
+Embarked         0
+WikiId           0
+Name_wiki        5
+Age_wiki         0
+Hometown         5
+Boarded          5
+Destination      5
+Class            0
+dtype: int64
+df.drop(columns=['Boarded'],inplace=True)
+df.drop(columns=['Hometown'],inplace=True)
+df.isnull().sum()
+PassengerId      0
+Survived       418
+Pclass           0
+Name             0
+Sex              0
+Age              0
+SibSp            0
+Parch            0
+Ticket           0
+Fare             0
+Embarked         0
+WikiId           0
+Name_wiki        5
+Age_wiki         0
+Destination      5
+Class            0
+dtype: int64
+df['Parch'].value_counts()
+0    1002
+1     170
+2     113
+3       8
+5       6
+4       6
+9       2
+6       2
+Name: Parch, dtype: int64
+df['Survived']=df['Survived'].astype('category')
+df['Sex']=df['Sex'].astype('category')
+df['Pclass']=df['Pclass'].astype('category')
+df['Age']=df['Age'].astype('category')
+df['Embarked']=df['Embarked'].astype('category')
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 1309 entries, 0 to 1308
+Data columns (total 16 columns):
+ #   Column       Non-Null Count  Dtype   
+---  ------       --------------  -----   
+ 0   PassengerId  1309 non-null   int64   
+ 1   Survived     891 non-null    category
+ 2   Pclass       1309 non-null   category
+ 3   Name         1309 non-null   object  
+ 4   Sex          1309 non-null   category
+ 5   Age          1309 non-null   category
+ 6   SibSp        1309 non-null   int64   
+ 7   Parch        1309 non-null   int64   
+ 8   Ticket       1309 non-null   object  
+ 9   Fare         1309 non-null   float64 
+ 10  Embarked     1309 non-null   category
+ 11  WikiId       1309 non-null   float64 
+ 12  Name_wiki    1304 non-null   object  
+ 13  Age_wiki     1309 non-null   float64 
+ 14  Destination  1304 non-null   object  
+ 15  Class        1309 non-null   float64 
+dtypes: category(5), float64(4), int64(3), object(4)
+memory usage: 122.7+ KB
+df.describe()
+PassengerId	SibSp	Parch	Fare	WikiId	Age_wiki	Class
+count	1309.000000	1309.000000	1309.000000	1309.000000	1309.000000	1309.000000	1309.000000
+mean	655.000000	0.498854	0.385027	33.295479	658.534509	29.408258	2.291411
+std	378.020061	1.041658	0.865560	51.738879	379.649656	13.722477	0.839244
+min	1.000000	0.000000	0.000000	0.000000	1.000000	0.170000	1.000000
+25%	328.000000	0.000000	0.000000	7.895800	328.000000	21.000000	2.000000
+50%	655.000000	0.000000	0.000000	14.454200	659.000000	28.000000	3.000000
+75%	982.000000	1.000000	0.000000	31.275000	986.000000	37.000000	3.000000
+max	1309.000000	8.000000	9.000000	512.329200	1314.000000	74.000000	3.000000
+sns.countplot(df['Survived'])
+death_percent=round((df['Survived'].value_counts().values[0]/1309*100))
+
+print('out of 1309 {} people died in the accident'.format(death_percent))
+out of 1309 42.0 people died in the accident
+print(df['Pclass'].value_counts()/1309*100)
+3    54.163484
+1    24.675325
+2    21.161192
+Name: Pclass, dtype: float64
+sns.countplot(df['Pclass'])
+<matplotlib.axes._subplots.AxesSubplot at 0x284611aee08>
+
+print(df['Sex'].value_counts()/1309*100)
+sns.countplot(df['Sex'])
+male      64.400306
+female    35.599694
+Name: Sex, dtype: float64
+<matplotlib.axes._subplots.AxesSubplot at 0x2846121af88>
+
+print(df['Embarked'].value_counts()/1309*100)
+sns.countplot(df['Embarked'])
+S    69.977082
+C    20.626432
+Q     9.396486
+Name: Embarked, dtype: float64
+<matplotlib.axes._subplots.AxesSubplot at 0x28461279388>
+
+sns.distplot(df['Age_wiki'])
+<matplotlib.axes._subplots.AxesSubplot at 0x2846120d308>
+
+sns.boxplot(df['Age'])
+<matplotlib.axes._subplots.AxesSubplot at 0x284611aed88>
+
+sns.distplot(df['Fare'])
+<matplotlib.axes._subplots.AxesSubplot at 0x284613e5a88>
+
+print(df['Fare'].skew())
+4.369374593951007
+print(df['Fare'].kurt())
+27.05086615808882
+sns.boxplot(df['Fare'])
+<matplotlib.axes._subplots.AxesSubplot at 0x284614e1cc8>
+
+sns.countplot(df['Survived'],hue=df['Pclass'])
+pd.crosstab(df['Pclass'],df['Survived']).apply(lambda r:round((r/r.sum())*100,1),axis=1)
+Survived	0.0	1.0
+Pclass		
+1	37.0	63.0
+2	52.7	47.3
+3	75.8	24.2
+
+sns.countplot(df['Survived'],hue=df['Sex'])
+pd.crosstab(df['Sex'],df['Survived']).apply(lambda r:round((r/r.sum())*100,1),axis=1)
+Survived	0.0	1.0
+Sex		
+female	25.8	74.2
+male	81.1	18.9
+
+sns.countplot(df['Survived'],hue=df['Embarked'])
+pd.crosstab(df['Embarked'],df['Survived']).apply(lambda r:round((r/r.sum())*100,1),axis=1)
+Survived	0.0	1.0
+Embarked		
+C	44.6	55.4
+Q	61.0	39.0
+S	66.1	33.9
+
+sns.pairplot(df)
+<seaborn.axisgrid.PairGrid at 0x284615b0448>
+
+sns.heatmap(df.corr())
+<matplotlib.axes._subplots.AxesSubplot at 0x2846494fac8>
+
+df['family_size']=df['Parch']+df['SibSp']
+df.sample(5)
+PassengerId	Survived	Pclass	Name	Sex	Age	SibSp	Parch	Ticket	Fare	Embarked	WikiId	Name_wiki	Age_wiki	Destination	Class	family_size
+64	65	0.0	1	Stewart, Mr. Albert A	male	29.881138	0	0	PC 17605	27.7208	C	282.0	Stewart, Mr. Albert A.	54.0	Gallipolis, Ohio, US	1.0	0
+1170	1171	NaN	2	Oxenham, Mr. Percy Thomas	male	22.000000	0	0	W./C. 14260	10.5000	S	529.0	Oxenham, Mr. Percy Thomas	22.0	North Bergen, New Jersey, US	2.0	0
+1094	1095	NaN	2	Quick, Miss. Winifred Vera	female	8.000000	1	1	26360	26.0000	S	546.0	Quick, Miss Winnifred Vera	8.0	Detroit, Michigan, US	2.0	2
+1144	1145	NaN	3	Salander, Mr. Karl Johan	male	24.000000	0	0	7266	9.3250	S	1185.0	Salander, Mr. Karl Johan	24.0	Red Wing, Minnesota, US	3.0	0
+482	483	0.0	3	Rouse, Mr. Richard Henry	male	50.000000	0	0	A/5 3594	8.0500	S	1165.0	Rouse, Mr. Richard Henry	50.0	Cleveland, Ohio, US	3.0	0
+def family_type(number):
+    if number==0:
+        return 'Alone'
+    elif number>0 and number<=4:
+        return 'Medium'
+    else:
+        return "Large"
+df['family_type']=df['family_size'].apply(family_type)
+df.sample(5)
+PassengerId	Survived	Pclass	Name	Sex	Age	SibSp	Parch	Ticket	Fare	Embarked	WikiId	Name_wiki	Age_wiki	Destination	Class	family_size	family_type
+1033	1034	NaN	1	Ryerson, Mr. Arthur Larned	male	61.000000	1	3	PC 17608	262.3750	C	246.0	Ryerson, Mr. Arthur Larned	61.0	Cooperstown, New York, US	1.0	4	Medium
+440	441	1.0	2	Hart, Mrs. Benjamin (Esther Ada Bloomfield)	female	45.000000	1	1	F.C.C. 13529	26.2500	S	439.0	Hart, Mrs. Esther Ada (née Bloomfield)	48.0	Winnipeg, Manitoba, Canada	2.0	2	Medium
+254	255	0.0	3	Rosblom, Mrs. Viktor (Helena Wilhelmina)	female	41.000000	0	2	370129	20.2125	S	1161.0	Rosblom, Mrs. Helena Wilhelmina	41.0	Astoria, Oregon, US	3.0	2	Medium
+367	368	1.0	3	Moussa, Mrs. (Mantoura Boulos)	female	29.881138	0	0	2626	7.2292	C	1042.0	Moussa, Mrs. Mantoura	35.0	Wilkes-Barre, Pennsylvania, US	3.0	0	Alone
+980	981	NaN	2	Wells, Master. Ralph Lester	male	2.000000	1	1	29103	23.0000	S	595.0	Wells, Master Ralph Lester	2.0	Akron, Ohio, US	2.0	2	Medium
+df.drop(columns=['SibSp','Parch','family_size'],inplace=True)
+df.sample(10)
+PassengerId	Survived	Pclass	Name	Sex	Age	Ticket	Fare	Embarked	WikiId	Name_wiki	Age_wiki	Destination	Class	family_type
+791	792	0.0	2	Gaskell, Mr. Alfred	male	16.000000	239865	26.0000	S	420.0	Gaskell, Mr. William Alfred	18.0	Montreal, Quebec, Canada	2.0	Alone
+657	658	0.0	3	Bourke, Mrs. John (Catherine)	female	32.000000	364849	15.5000	Q	685.0	Bourke, Mrs. Catherine (née McHugh)	32.0	Chicago, Illinois, US	3.0	Medium
+975	976	NaN	2	Lamb, Mr. John Joseph	male	29.881138	240261	10.7083	Q	484.0	Lamb, Mr. John Joseph	30.0	Providence, Rhode Island, US	2.0	Alone
+888	889	0.0	3	Johnston, Miss. Catherine Helen "Carrie"	female	29.881138	W./C. 6607	23.4500	S	910.0	Johnston, Miss Catherine Nellie	7.0	New London, Connecticut, US	3.0	Medium
+555	556	0.0	1	Wright, Mr. George	male	62.000000	113807	26.5500	S	325.0	Wright, Mr. George	62.0	Halifax, Nova Scotia, Canada	1.0	Alone
+165	166	1.0	3	Goldsmith, Master. Frank John William "Frankie"	male	9.000000	363291	20.5250	S	829.0	Goldsmith, Master Frank John William	9.0	Detroit, Michigan, US	3.0	Medium
+930	931	NaN	3	Hee, Mr. Ling	male	29.881138	1601	56.4958	S	961.0	Lee, Mr. Ling	28.0	New York City	3.0	Alone
+776	777	0.0	3	Tobin, Mr. Roger	male	29.881138	383121	7.7500	Q	1257.0	Tobin, Mr. Roger	20.0	New York City	3.0	Alone
+1252	1253	NaN	2	Mallet, Mrs. Albert (Antoinette Magnin)	female	24.000000	S.C./PARIS 2079	37.0042	C	500.0	Mallet, Mrs. Antoinette Marie (née Magnin)	24.0	Montreal, Quebec, Canada	2.0	Medium
+664	665	1.0	3	Lindqvist, Mr. Eino William	male	20.000000	STON/O 2. 3101285	7.9250	S	977.0	Lindqvist, Mr. Eino William	20.0	Monessen, Pennsylvania, US	3.0	Medium
+pd.crosstab(df['family_type'],df['Survived']).apply(lambda r:round((r/r.sum())*100,1),axis=1)
+Survived	0.0	1.0
+family_type		
+Alone	69.6	30.4
+Large	85.1	14.9
+Medium	44.0	56.0
+q1=np.percentile(df['Fare'],0.25)
+q3=np.percentile(df['Fare'],0.75)
+q1
+0.0
+q3
+0.0
+plt.figure(figsize=(18,10))
+sns.heatmap(df.corr(),cmap='summer')
+<matplotlib.axes._subplots.AxesSubplot at 0x28467634308>
+
+ 
